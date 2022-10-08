@@ -19,7 +19,6 @@ public class SlashCommandsController
     public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request)
     {
         _logger.LogInformation(
-            "\n" +
             "Command: {command}\n" +
             "Text: {text}\n" +
             "Token: {token}\n" +
