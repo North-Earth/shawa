@@ -23,4 +23,5 @@ RUN dotnet publish "Shawa.Bot.Api.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "Shawa.Bot.Api.dll"]

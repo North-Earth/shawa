@@ -10,14 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (builder.Environment.IsProduction())
+builder.Services.AddHttpsRedirection(options =>
 {
-    builder.Services.AddHttpsRedirection(options =>
-    {
-        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-        options.HttpsPort = 443;
-    });
-}
+    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+    options.HttpsPort = 443;
+});
 
 var app = builder.Build();
 
@@ -32,6 +29,5 @@ app.MapHealthChecks("/healthz");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 
 app.Run();
