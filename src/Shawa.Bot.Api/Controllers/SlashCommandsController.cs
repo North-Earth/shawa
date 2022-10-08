@@ -102,7 +102,7 @@ public class SlashCommandsController: ControllerBase
     }
 
     [HttpGet("answer")]
-    public IActionResult SendAnswer(object request)
+    public IActionResult SendAnswer([FromForm] object request)
     {
         _logger.LogInformation("Answer + {request}", request.ToString());
 
