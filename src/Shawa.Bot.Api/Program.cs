@@ -11,11 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddHttpsRedirection(options =>
-// {
-//     options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-//     options.HttpsPort = 443;
-// });
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+    options.HttpsPort = 443;
+});
 
 builder.Services.Configure<MattermostSettings>(
     builder.Configuration.GetSection(nameof(MattermostSettings)));
@@ -29,8 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHealthChecks("/healthz");
-// app.UseHttpsRedirection();
+app.MapHealthChecks("/health");
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
