@@ -14,9 +14,11 @@ public class SlashCommandsController : ControllerBase
     private readonly ILogger<SlashCommandsController> _logger;
     private readonly IOptions<MattermostSettings> _mattermostSettings;
 
-    public SlashCommandsController(ILogger<SlashCommandsController> logger)
+    public SlashCommandsController(ILogger<SlashCommandsController> logger, 
+        IOptions<MattermostSettings> mattermostSettings)
     {
         _logger = logger;
+        _mattermostSettings = mattermostSettings;
     }
     
     [HttpPost("friday")]
@@ -99,7 +101,8 @@ public class SlashCommandsController : ControllerBase
     }
     
     [HttpGet("friday")]
-    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request)
+    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request, 
+        [FromBody] SlashCommandRequest request2, [FromHeader] SlashCommandRequest request3)
     {
         _logger.LogInformation(
             "Command: {command}\n" +
@@ -122,6 +125,50 @@ public class SlashCommandsController : ControllerBase
             request.UserId, string.Join(",", request.UserMentions ?? Array.Empty<string?>()),
             request.UserName, string.Join(",", request.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request.UserMentionsIds ?? Array.Empty<string?>()));
+        
+        _logger.LogInformation(
+            "Command: {command}\n" +
+            "Text: {text}\n" +
+            "Token: {token}\n" +
+            "ChannelId: {channelId}\n" +
+            "ChannelMentions: {channelMentions}\n" +
+            "ChannelName: {channelName}\n" +
+            "ResponseUrl: {responseUrl}\n" +
+            "TeamId: {teamId}\n" +
+            "TriggerId: {triggerId}\n" +
+            "UserId: {userId}\n" +
+            "UserMentions: {userMentions}\n" +
+            "UserName: {userName}\n" +
+            "ChannelMentionsIds: {channelMentionsIds}\n" +
+            "UserMentionsIds: {userMentionsIds} \n",
+            request2.Command, request2.Text, request2.Token,
+            request2.ChannelId, string.Join(",", request2.ChannelMentions ?? Array.Empty<string?>()),
+            request2.ChannelName, request2.ResponseUrl, request2.TeamId, request2.TriggerId,
+            request2.UserId, string.Join(",", request2.UserMentions ?? Array.Empty<string?>()),
+            request2.UserName, string.Join(",", request2.ChannelMentionsIds ?? Array.Empty<string?>()),
+            string.Join(",", request2.UserMentionsIds ?? Array.Empty<string?>()));
+        
+        _logger.LogInformation(
+            "Command: {command}\n" +
+            "Text: {text}\n" +
+            "Token: {token}\n" +
+            "ChannelId: {channelId}\n" +
+            "ChannelMentions: {channelMentions}\n" +
+            "ChannelName: {channelName}\n" +
+            "ResponseUrl: {responseUrl}\n" +
+            "TeamId: {teamId}\n" +
+            "TriggerId: {triggerId}\n" +
+            "UserId: {userId}\n" +
+            "UserMentions: {userMentions}\n" +
+            "UserName: {userName}\n" +
+            "ChannelMentionsIds: {channelMentionsIds}\n" +
+            "UserMentionsIds: {userMentionsIds} \n",
+            request3.Command, request3.Text, request3.Token,
+            request3.ChannelId, string.Join(",", request3.ChannelMentions ?? Array.Empty<string?>()),
+            request3.ChannelName, request2.ResponseUrl, request3.TeamId, request3.TriggerId,
+            request3.UserId, string.Join(",", request3.UserMentions ?? Array.Empty<string?>()),
+            request3.UserName, string.Join(",", request3.ChannelMentionsIds ?? Array.Empty<string?>()),
+            string.Join(",", request3.UserMentionsIds ?? Array.Empty<string?>()));
         
         if (_mattermostSettings.Value.Token != request.Token)
         {
