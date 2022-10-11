@@ -143,7 +143,7 @@ public class SlashCommandsController : ControllerBase
             "UserMentionsIds: {userMentionsIds} \n",
             request3.Command, request3.Text, request3.Token,
             request3.ChannelId, string.Join(",", request3.ChannelMentions ?? Array.Empty<string?>()),
-            request3.ChannelName, request2.ResponseUrl, request3.TeamId, request3.TriggerId,
+            request3.ChannelName, request3.ResponseUrl, request3.TeamId, request3.TriggerId,
             request3.UserId, string.Join(",", request3.UserMentions ?? Array.Empty<string?>()),
             request3.UserName, string.Join(",", request3.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request3.UserMentionsIds ?? Array.Empty<string?>()));
