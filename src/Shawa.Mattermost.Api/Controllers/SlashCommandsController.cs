@@ -53,6 +53,7 @@ public class SlashCommandsController : ControllerBase
 
         var response = new SlashCommandResponse
         {
+            ResponseType = "in_channel",
             Attachments = new []
             {
                 new Attachment
@@ -158,6 +159,7 @@ public class SlashCommandsController : ControllerBase
 
         var response = new SlashCommandResponse
         {
+            ResponseType = "in_channel",
             Attachments = new []
             {
                 new Attachment
