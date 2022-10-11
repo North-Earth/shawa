@@ -91,6 +91,32 @@ public class SlashCommandsController : ControllerBase
                                     Value = "opt3"
                                 },
                             },
+                        },
+                        new Action
+                        {
+                            Id = "message",
+                            Name = "Ephemeral Message",
+                            Integration = new ActionIntegration
+                            {
+                                Url = $"{_mattermostSettings.Value.Url}/friday/answer",
+                                Context = new ActionIntegrationContext
+                                {
+                                    Action = "do_something_ephemeral"
+                                }
+                            }
+                        },
+                        new Action
+                        {
+                            Id = "update",
+                            Name = "Update",
+                            Integration = new ActionIntegration
+                            {
+                                Url = $"{_mattermostSettings.Value.Url}/friday/answer",
+                                Context = new ActionIntegrationContext
+                                {
+                                    Action = "do_something_update"
+                                }
+                            }
                         }
                     }
                 }
@@ -101,8 +127,7 @@ public class SlashCommandsController : ControllerBase
     }
     
     [HttpGet("friday")]
-    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request,
-        [FromHeader] SlashCommandRequest request3)
+    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromHeader] SlashCommandRequest request)
     {
         _logger.LogInformation(
             "Command: {command}\n" +
@@ -126,28 +151,6 @@ public class SlashCommandsController : ControllerBase
             request.UserName, string.Join(",", request.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request.UserMentionsIds ?? Array.Empty<string?>()));
 
-        _logger.LogInformation(
-            "Command: {command}\n" +
-            "Text: {text}\n" +
-            "Token: {token}\n" +
-            "ChannelId: {channelId}\n" +
-            "ChannelMentions: {channelMentions}\n" +
-            "ChannelName: {channelName}\n" +
-            "ResponseUrl: {responseUrl}\n" +
-            "TeamId: {teamId}\n" +
-            "TriggerId: {triggerId}\n" +
-            "UserId: {userId}\n" +
-            "UserMentions: {userMentions}\n" +
-            "UserName: {userName}\n" +
-            "ChannelMentionsIds: {channelMentionsIds}\n" +
-            "UserMentionsIds: {userMentionsIds} \n",
-            request3.Command, request3.Text, request3.Token,
-            request3.ChannelId, string.Join(",", request3.ChannelMentions ?? Array.Empty<string?>()),
-            request3.ChannelName, request3.ResponseUrl, request3.TeamId, request3.TriggerId,
-            request3.UserId, string.Join(",", request3.UserMentions ?? Array.Empty<string?>()),
-            request3.UserName, string.Join(",", request3.ChannelMentionsIds ?? Array.Empty<string?>()),
-            string.Join(",", request3.UserMentionsIds ?? Array.Empty<string?>()));
-        
         // if (_mattermostSettings.Value.Token != request.Token)
         // {
         //     return Forbid();
@@ -193,6 +196,32 @@ public class SlashCommandsController : ControllerBase
                                     Value = "opt3"
                                 },
                             },
+                        },
+                        new Action
+                        {
+                            Id = "message",
+                            Name = "Ephemeral Message",
+                            Integration = new ActionIntegration
+                            {
+                                Url = $"{_mattermostSettings.Value.Url}/friday/answer",
+                                Context = new ActionIntegrationContext
+                                {
+                                    Action = "do_something_ephemeral"
+                                }
+                            }
+                        },
+                        new Action
+                        {
+                            Id = "update",
+                            Name = "Update",
+                            Integration = new ActionIntegration
+                            {
+                                Url = $"{_mattermostSettings.Value.Url}/friday/answer",
+                                Context = new ActionIntegrationContext
+                                {
+                                    Action = "do_something_update"
+                                }
+                            }
                         }
                     }
                 }
