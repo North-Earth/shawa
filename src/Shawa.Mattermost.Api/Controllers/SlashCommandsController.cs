@@ -46,10 +46,10 @@ public class SlashCommandsController : ControllerBase
             request.UserName, string.Join(",", request.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request.UserMentionsIds ?? Array.Empty<string?>()));
         
-        if (_mattermostSettings.Value.Token != request.Token)
-        {
-            return Forbid();
-        }
+        // if (_mattermostSettings.Value.Token != request.Token)
+        // {
+        //     return Forbid();
+        // }
 
         var response = new SlashCommandResponse
         {
@@ -101,8 +101,8 @@ public class SlashCommandsController : ControllerBase
     }
     
     [HttpGet("friday")]
-    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request, 
-        [FromBody] SlashCommandRequest request2, [FromHeader] SlashCommandRequest request3)
+    public async Task<ActionResult<SlashCommandResponse>> TakeOrder([FromForm] SlashCommandRequest request,
+        [FromHeader] SlashCommandRequest request3)
     {
         _logger.LogInformation(
             "Command: {command}\n" +
@@ -125,29 +125,7 @@ public class SlashCommandsController : ControllerBase
             request.UserId, string.Join(",", request.UserMentions ?? Array.Empty<string?>()),
             request.UserName, string.Join(",", request.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request.UserMentionsIds ?? Array.Empty<string?>()));
-        
-        _logger.LogInformation(
-            "Command: {command}\n" +
-            "Text: {text}\n" +
-            "Token: {token}\n" +
-            "ChannelId: {channelId}\n" +
-            "ChannelMentions: {channelMentions}\n" +
-            "ChannelName: {channelName}\n" +
-            "ResponseUrl: {responseUrl}\n" +
-            "TeamId: {teamId}\n" +
-            "TriggerId: {triggerId}\n" +
-            "UserId: {userId}\n" +
-            "UserMentions: {userMentions}\n" +
-            "UserName: {userName}\n" +
-            "ChannelMentionsIds: {channelMentionsIds}\n" +
-            "UserMentionsIds: {userMentionsIds} \n",
-            request2.Command, request2.Text, request2.Token,
-            request2.ChannelId, string.Join(",", request2.ChannelMentions ?? Array.Empty<string?>()),
-            request2.ChannelName, request2.ResponseUrl, request2.TeamId, request2.TriggerId,
-            request2.UserId, string.Join(",", request2.UserMentions ?? Array.Empty<string?>()),
-            request2.UserName, string.Join(",", request2.ChannelMentionsIds ?? Array.Empty<string?>()),
-            string.Join(",", request2.UserMentionsIds ?? Array.Empty<string?>()));
-        
+
         _logger.LogInformation(
             "Command: {command}\n" +
             "Text: {text}\n" +
@@ -170,10 +148,10 @@ public class SlashCommandsController : ControllerBase
             request3.UserName, string.Join(",", request3.ChannelMentionsIds ?? Array.Empty<string?>()),
             string.Join(",", request3.UserMentionsIds ?? Array.Empty<string?>()));
         
-        if (_mattermostSettings.Value.Token != request.Token)
-        {
-            return Forbid();
-        }
+        // if (_mattermostSettings.Value.Token != request.Token)
+        // {
+        //     return Forbid();
+        // }
 
         var response = new SlashCommandResponse
         {
