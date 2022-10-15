@@ -1,5 +1,4 @@
 using System.Net;
-using Shawa.Bot.Api.Models.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,6 @@ builder.Services.AddHttpsRedirection(options =>
     options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
     options.HttpsPort = 443;
 });
-
-builder.Services.Configure<MattermostSettings>(
-    builder.Configuration.GetSection(nameof(MattermostSettings)));
 
 var app = builder.Build();
 
