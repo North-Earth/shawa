@@ -1,9 +1,11 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Shawa.Api.Controllers;
 
 [ApiController]
-[Route("shawa/api/orders")]
+[ApiVersion(1.0)]
+[Route("shawa/api/v{version:apiVersion}/orders")]
 public class OrderController: ControllerBase
 {
     private readonly ILogger<OrderController> _logger;
