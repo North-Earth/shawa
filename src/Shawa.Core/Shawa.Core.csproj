@@ -8,4 +8,8 @@
     <Company>Aleksey Kukushkin</Company>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shawa.Domain\Shawa.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

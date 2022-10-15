@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Shawa.Core.Services;
 
 namespace Shawa.Api.Controllers;
 
@@ -9,10 +10,13 @@ namespace Shawa.Api.Controllers;
 public class OrderController: ControllerBase
 {
     private readonly ILogger<OrderController> _logger;
+    private readonly IOrderService _orderService;
 
-    public OrderController(ILogger<OrderController> logger)
+    public OrderController(ILogger<OrderController> logger, 
+        IOrderService orderService)
     {
         _logger = logger;
+        _orderService = orderService;
     }
 
     [HttpGet("{orderId}")]
@@ -27,8 +31,20 @@ public class OrderController: ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpPost("{orderId}/close")]
-    public Task<IActionResult> CloseOrder(string orderId)
+    [HttpPost("{orderId}/complete")]
+    public Task<IActionResult> CompleteOrder(string orderId)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpPost("{orderId}/details/{orderDetailsId}")]
+    public Task<IActionResult> AddOrderDetails(string orderId, string orderDetailsId)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpDelete("{orderId}/details/{orderDetailsId}")]
+    public Task<IActionResult> RemoveOrderDetails(string orderId, string orderDetailsId)
     {
         throw new NotImplementedException();
     }
