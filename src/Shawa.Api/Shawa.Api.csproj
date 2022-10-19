@@ -12,11 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="6.1.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shawa.Core\Shawa.Core.csproj" />
+    <ProjectReference Include="..\Shawa.Application\Shawa.Application.csproj" />
+    <ProjectReference Include="..\Shawa.Infrastructure\Shawa.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

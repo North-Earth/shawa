@@ -1,4 +1,4 @@
-using Shawa.Core.Services;
+using Shawa.Application.Services;
 using Shawa.Domain.Order;
 
 namespace Shawa.Api.Services;

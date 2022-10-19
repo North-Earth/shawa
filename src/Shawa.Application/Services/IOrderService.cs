@@ -1,7 +1,6 @@
-using Shawa.Domain;
 using Shawa.Domain.Order;
 
-namespace Shawa.Core.Services;
+namespace Shawa.Application.Services;
 
 public interface IOrderService
 {

@@ -1,5 +1,9 @@
 using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Shawa.Api.Models.Requests;
+using Shawa.Application.Services;
+using Shawa.Domain.Restaurant;
 
 namespace Shawa.Api.Controllers;
 
@@ -8,33 +12,28 @@ namespace Shawa.Api.Controllers;
 [Route("shawa/api/v{version:apiVersion}/restaurants")]
 public class RestaurantController: ControllerBase
 {
-    [HttpGet]
-    public Task<IActionResult> GetRestaurants()
+    private readonly IMapper _mapper;
+    private readonly ILogger<RestaurantController> _logger;
+    private readonly IRestaurantService _restaurantService;
+    
+    public RestaurantController(IMapper mapper, 
+        ILogger<RestaurantController> logger, 
+        IRestaurantService restaurantService)
     {
-        throw new NotImplementedException();
+        _mapper = mapper;
+        _logger = logger;
+        _restaurantService = restaurantService;
     }
     
-    [HttpGet("{restaurantId}")]
-    public Task<IActionResult> GetRestaurant(string restaurantId)
+    [HttpPost]
+    public async Task<ActionResult<Restaurant>> CreateRestaurant([FromBody] CreateRestaurantRequest request, 
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
-    
-    [HttpPost("{restaurantId}")]
-    public Task<IActionResult> CreateRestaurant(string restaurantId)
-    {
-        throw new NotImplementedException();
-    }
-    
-    [HttpPut("{restaurantId}")]
-    public Task<IActionResult> UpdateRestaurant(string restaurantId)
-    {
-        throw new NotImplementedException();
-    }
-    
-    [HttpDelete("{restaurantId}")]
-    public Task<IActionResult> DeleteRestaurant(string restaurantId)
-    {
-        throw new NotImplementedException();
+        var restaurant = _mapper.Map<Restaurant>(request.Restaurant);
+
+        var result = await _restaurantService
+            .Create(restaurant, cancellationToken);
+
+        return Created($"{result.Id}", result);
     }
 }
