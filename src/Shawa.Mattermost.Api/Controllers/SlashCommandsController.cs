@@ -21,6 +21,24 @@ public class SlashCommandsController : ControllerBase
         _mattermostSettings = mattermostSettings;
     }
     
+    [HttpGet("{commandId}")]
+    public async Task<ActionResult<SlashCommandResponse>> GetCommandResult(string commandId, 
+        [FromHeader] SlashCommandRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IActionResult> Test()
+    {
+        // using (var ws = new ClientWebSocket())
+        // {
+        //     await ws.ConnectAsync(new Uri("wss:/ /api/v4/websocket"), default);
+        //     ws.SendAsync();
+        // }
+
+        throw new NotImplementedException();
+    }
+    
     [HttpPost("friday")]
     public async Task<ActionResult<SlashCommandResponse>> TakeOrder2([FromForm] SlashCommandRequest request)
     {

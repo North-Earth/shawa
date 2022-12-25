@@ -12,16 +12,6 @@ public class Food
     
     public IEnumerable<Ingredient> Ingredients { get; private set; }
 
-    public Food(string name, string emoji, 
-        decimal cost, IEnumerable<Ingredient> ingredients)
-    {
-        Id = null;
-        Name = name;
-        Emoji = emoji;
-        Cost = cost;
-        Ingredients = ingredients;
-    }
-    
     public Food(string id, string name, string emoji, 
         decimal cost, IEnumerable<Ingredient> ingredients)
     {
@@ -29,17 +19,29 @@ public class Food
         Name = name;
         Emoji = emoji;
         Cost = cost;
-        Ingredients = ingredients;
+        Ingredients ??= Array.Empty<Ingredient>();
+        
+        AddIngredients(ingredients);
     }
+
+    public Food(string name, string emoji, decimal cost, 
+        IEnumerable<Ingredient> ingredients) : this(
+        null, name, emoji, cost, ingredients) { }
 
     public void AddIngredient(Ingredient ingredient)
     {
-        if (Ingredients.Any(ing => ing.Id == ingredient.Id))
+        if (Ingredients.Any(ing => ing.Id is not null && ing.Id == ingredient.Id))
+        {
+            throw new NotImplementedException();
+        }
+        
+        if (Ingredients.Any(ing => ing.Emoji == ingredient.Emoji))
         {
             throw new NotImplementedException();
         }
         
         var list = Ingredients.ToList();
+        
         list.Add(ingredient);
 
         Ingredients = list.AsReadOnly();
@@ -59,4 +61,10 @@ public class Food
         
         Ingredients = list.AsReadOnly();
     }
+
+    public Food AsOrderDetailsFood(IEnumerable<string> ingredientsIds) 
+        => new(Id, Name, Emoji, Cost, Ingredients.Where(x => ingredientsIds.Contains(x.Id)));
+
+    private void AddIngredients(IEnumerable<Ingredient> ingredients) 
+        => ingredients.ToList().ForEach(AddIngredient);
 }

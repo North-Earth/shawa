@@ -5,7 +5,8 @@ using Shawa.Application.Services;
 using Shawa.Infrastructure;
 using Shawa.Infrastructure.Configuration;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args)
+    .ConfigureEnvironments();
 
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection(nameof(MongoSettings)));
 

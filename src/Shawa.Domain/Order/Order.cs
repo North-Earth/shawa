@@ -2,29 +2,43 @@ namespace Shawa.Domain.Order;
 
 public class Order
 {
-    protected string Id { get; }
-    
-    protected string Name { get; }
-    
-    protected IEnumerable<OrderDetail> Details { get; private set; }
-    
-    protected OrderStatus Status { get; private set; }
-    
-    protected DateTime Created { get; }
+    private List<OrderDetail> _details;
 
-    protected DateTime? Completed { get; private set; }
+    public string? Id { get; }
     
-    public Order(string id, string name, DateTime created, 
+    public string Name { get; }
+
+    public string Creator { get; }
+    
+    public DateTime Created { get; }
+
+    public OrderStatus Status { get; private set; }
+
+    public DateTime? Completed { get; private set; }
+    
+    public OrderMetadata Metadata { get; }
+    
+    public IReadOnlyCollection<OrderDetail> Details => _details.AsReadOnly();
+    
+    public Order(string id, string name, 
+        string creator, OrderMetadata metadata, 
         IEnumerable<OrderDetail> orderDetails)
     {
         Id = id;
         Name = name;
-        Created = created;
-        Details = orderDetails;
+        Creator = creator;
+        Metadata = metadata;
 
+        Created = DateTime.UtcNow;
         Status = OrderStatus.Open;
         Completed = null;
+        
+        _details = orderDetails.ToList();
     }
+
+    public Order(string name, string creator,
+        OrderMetadata metadata, IEnumerable<OrderDetail> orderDetails) 
+        : this(null, name, creator, metadata, orderDetails) { }
 
     public void Complete()
     {
@@ -37,8 +51,29 @@ public class Order
         Completed = DateTime.UtcNow;
     }
 
+    public void AddDetail(OrderDetail orderDetail)
+    {
+        if (_details.Exists(x => x.Id == orderDetail.Id))
+        {
+            throw new NotImplementedException();
+        }
+        
+        _details.Add(orderDetail);
+    }
+
+    public void UpdateDetail(OrderDetail orderDetail)
+    {
+        if (!_details.Exists(x => x.Id == orderDetail.Id))
+        {
+            throw new NotImplementedException();
+        }
+
+        _details.RemoveAll(detail => detail.Id == orderDetail.Id);
+        _details.Add(orderDetail);
+    }
+
     public void UpdateDetails(IEnumerable<OrderDetail> orderDetails)
     {
-        Details = orderDetails;
+        //Details = orderDetails;
     }
 }

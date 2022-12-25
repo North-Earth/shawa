@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Shawa.Application.Repositories;
+using Shawa.Domain.Restaurant;
 using Shawa.Infrastructure.Configuration;
 using Shawa.Infrastructure.Entities.Restaurant;
 
@@ -32,7 +33,62 @@ public class RestaurantRepository: IRestaurantRepository
         _collection = mongoDatabase.GetCollection<RestaurantEntity>(
             mongoSettings.Value.RestaurantsCollectionName);
     }
-    
+
+    public async Task<Domain.Restaurant.Restaurant> FindByIdAsync(string id,
+        CancellationToken cancellationToken = default)
+    {
+        var entity = await _collection
+            .Find(x => x.Id == id)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        
+        if (entity is null)
+        {
+            throw new NotImplementedException();
+        }
+        
+        var result = _mapper.Map<Domain.Restaurant.Restaurant>(entity);
+
+        return result;
+    }
+
+    public async Task<Menu> FindMenuByIdAsync(string restaurantId, string menuId, 
+        CancellationToken cancellationToken = default)
+    {
+        var customProjection = Builders<RestaurantEntity>
+            .Projection.Expression(r => r.Menus.FirstOrDefault(x => x.Id == menuId));
+        
+        var entity = await _collection
+            .Find(x => x.Id == restaurantId)
+            .Project(customProjection)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+        if (entity is null)
+        {
+            throw new NotImplementedException();
+        }
+        
+        var result = _mapper.Map<Menu>(entity);
+        
+        return result;
+    }
+
+    public async Task<IEnumerable<Domain.Restaurant.Restaurant>> FindAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var entities = await _collection
+            .Find(_ => true)
+            .ToListAsync(cancellationToken: cancellationToken);
+        
+        if (entities is null || entities.Count == 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        var result = _mapper.Map<IEnumerable<Domain.Restaurant.Restaurant>>(entities);
+
+        return result;
+    }
+
     public async Task<Domain.Restaurant.Restaurant> ReplaceOneAsync(
         Domain.Restaurant.Restaurant restaurant, 
         CancellationToken cancellationToken = default)
@@ -66,57 +122,10 @@ public class RestaurantRepository: IRestaurantRepository
         return result;
     }
 
-    // public Task<Domain.Restaurant.Restaurant> GetByIdAsync(string id, 
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public async Task<IEnumerable<Domain.Restaurant.Restaurant>> GetAllAsync(
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     var entities = await _collection
-    //         .Find(_ => true)
-    //         .ToListAsync(cancellationToken: cancellationToken);
-    //     
-    //     if (entities is null || !entities.Any())
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //     
-    //     var data = _mapper.Map<IEnumerable<Domain.Restaurant.Restaurant>>(entities);
-    //
-    //     if (data is null)
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    //
-    //     return data;
-    // }
-    //
-    // public async Task<Domain.Restaurant.Restaurant> InsertOneAsync(Domain.Restaurant.Restaurant restaurant, 
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     var entity = _mapper.Map<RestaurantEntity>(restaurant);
-    //
-    //     var filter = 1;
-    //     var options = 1;
-    //
-    //     await _collection.InsertOneAsync(entity, cancellationToken);
-    //
-    //     return restaurant;
-    // }
-    //
-    // public Task<Domain.Restaurant.Restaurant> UpdateOneAsync(string id, 
-    //     Domain.Restaurant.Restaurant restaurant, 
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public void DeleteByIdAsync(string id, 
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     throw new NotImplementedException();
-    // }
+    public async Task DeleteOneAsync(string id, 
+        CancellationToken cancellationToken = default)
+    {
+        await _collection.DeleteOneAsync(x => x.Id == id, 
+            cancellationToken: cancellationToken);
+    }
 }

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  shawa-bot-api:
+    build:
+      context: .
+      target: shawa-bot-api-final
+    ports:
+      - "5070:80"
+      - "7070:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "7070"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "Qr0mK8GQ"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/certificates/kukushkin_ddns_net.pfx"
+    volumes:
+      - ${HOME}/certificates:/certificates/
+    image: shawa-bot-api
+    container_name: shawa-bot-api
+  shawa-mattermost-api:
+    build:
+      context: .
+      target: shawa-mattermost-api-final
+    ports:
+      - "5071:80"
+    image: shawa-mattermost-api
+    container_name: shawa-mattermost-api

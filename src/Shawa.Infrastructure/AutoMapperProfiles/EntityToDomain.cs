@@ -10,5 +10,8 @@ public class EntityToDomain: Profile
         CreateMap<Entities.Restaurant.MenuEntity, Domain.Restaurant.Menu>();
         CreateMap<Entities.Restaurant.FoodEntity, Domain.Restaurant.Food>();
         CreateMap<Entities.Restaurant.IngredientEntity, Domain.Restaurant.Ingredient>();
+        
+        CreateMap<Entities.Order.OrderEntity, Domain.Order.Order>();
+        CreateMap<Entities.Order.OrderMetadataEntity, Domain.Order.OrderMetadata>();
     }
 }

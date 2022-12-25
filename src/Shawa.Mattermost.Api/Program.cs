@@ -22,6 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseWebSockets();
+
 app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();

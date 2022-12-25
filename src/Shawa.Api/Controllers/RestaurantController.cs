@@ -14,7 +14,7 @@ public class RestaurantController: ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ILogger<RestaurantController> _logger;
-    private readonly IRestaurantService _restaurantService;
+    private readonly IRestaurantService  _restaurantService;
     
     public RestaurantController(IMapper mapper, 
         ILogger<RestaurantController> logger, 
@@ -25,8 +25,27 @@ public class RestaurantController: ControllerBase
         _restaurantService = restaurantService;
     }
     
+    [HttpGet]
+    public async Task<ActionResult<Restaurant>> GetRestaurants(
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _restaurantService.GetAll(cancellationToken);
+
+        return Ok(result);
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Restaurant>> GetRestaurantById(string id, 
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _restaurantService.GetById(id, cancellationToken);
+
+        return Ok(result);
+    }
+
     [HttpPost]
-    public async Task<ActionResult<Restaurant>> CreateRestaurant([FromBody] CreateRestaurantRequest request, 
+    public async Task<ActionResult<Restaurant>> CreateRestaurant(
+        [FromBody] CreateRestaurantRequest request, 
         CancellationToken cancellationToken = default)
     {
         var restaurant = _mapper.Map<Restaurant>(request.Restaurant);
@@ -35,5 +54,14 @@ public class RestaurantController: ControllerBase
             .Create(restaurant, cancellationToken);
 
         return Created($"{result.Id}", result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Restaurant>> DeleteRestaurant(string id,
+        CancellationToken cancellationToken = default)
+    {
+        await _restaurantService.Delete(id, cancellationToken);
+
+        return NoContent();
     }
 }

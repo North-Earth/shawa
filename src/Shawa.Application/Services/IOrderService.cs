@@ -4,13 +4,15 @@ namespace Shawa.Application.Services;
 
 public interface IOrderService
 {
-    Task<Order> GetOrder(string orderId);
-    
-    Task CreateOrder(string name);
-    
-    Task<Order> CompleteOrder(string orderId);
-    
-    Task AddOrderDetail();
-    
-    Task RemoveOrderDetail(string orderDetailId);
+    Task<Order> GetById(string id,
+        CancellationToken cancellationToken = default);
+
+    Task<Order> Create(string name, string restaurantId,
+        string restaurantMenuId, string channelId, string creator,
+        CancellationToken cancellationToken = default);
+
+    Task<Order> UpdateDetailAsync(string orderId, string detailId,
+        Visitor visitor,
+        IDictionary<string, IEnumerable<string>> foodIngredients,
+        CancellationToken cancellationToken = default);
 }

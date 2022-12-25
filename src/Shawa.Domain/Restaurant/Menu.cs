@@ -8,23 +8,25 @@ public class Menu
     
     public IEnumerable<Food> Food { get; private set; }
 
-    public Menu(string name, IEnumerable<Food> food)
-    {
-        Id = null;
-        Food = food;
-        Name = name;
-    }
-
     public Menu(string id, string name, IEnumerable<Food> food)
     {
         Id = id;
-        Food = food;
         Name = name;
+        Food ??= Array.Empty<Food>();
+        
+        AddFood(food);
     }
     
+    public Menu(string name, IEnumerable<Food> food): this(null, name, food) { }
+
     public void AddFood(Food food)
     {
-        if (Food.Any(ing => ing.Id == food.Id))
+        if (Food.Any(f => f.Id is not null && f.Id == food.Id))
+        {
+            throw new NotImplementedException();
+        }
+
+        if (Food.Any(f => f.Emoji == food.Emoji))
         {
             throw new NotImplementedException();
         }
@@ -49,4 +51,7 @@ public class Menu
         
         Food = list.AsReadOnly();
     }
+
+    private void AddFood(IEnumerable<Food> food) 
+        => food.ToList().ForEach(AddFood);
 }

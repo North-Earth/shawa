@@ -19,5 +19,10 @@ public class DomainToEntity: Profile
         CreateMap<Domain.Restaurant.Ingredient, Entities.Restaurant.IngredientEntity>()
             .ForMember(dest => dest.Id, 
                 opt=> opt.MapFrom(x => string.IsNullOrWhiteSpace(x.Id) ? ObjectId.GenerateNewId().ToString() : x.Id));
+        
+        CreateMap<Domain.Order.Order, Entities.Order.OrderEntity>()
+            .ForMember(dest => dest.Id, 
+                opt=> opt.MapFrom(x => string.IsNullOrWhiteSpace(x.Id) ? ObjectId.GenerateNewId().ToString() : x.Id));
+        CreateMap<Domain.Order.OrderMetadata, Entities.Order.OrderMetadataEntity>();
     }
 }

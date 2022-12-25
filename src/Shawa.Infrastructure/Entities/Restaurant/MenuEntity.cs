@@ -8,7 +8,7 @@ public class MenuEntity
 {
     [BsonId(IdGenerator = typeof(CombGuidGenerator))]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; }
     
     public string Name { get; set; }
     

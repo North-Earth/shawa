@@ -9,15 +9,6 @@ public class Ingredient
     public string Emoji { get; }
     
     public decimal Cost { get; }
-    
-    public Ingredient(string name, 
-        string emoji, decimal cost)
-    {
-        Id = null;
-        Name = name;
-        Emoji = emoji;
-        Cost = cost;
-    }
 
     public Ingredient(string id, string name, 
         string emoji, decimal cost)
@@ -27,4 +18,6 @@ public class Ingredient
         Emoji = emoji;
         Cost = cost;
     }
+    
+    public Ingredient(string name, string emoji, decimal cost): this(null, name, emoji, cost) { }
 }

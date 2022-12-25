@@ -16,6 +16,23 @@ public class RestaurantService: IRestaurantService
         _repository = repository;
     }
 
+    public Task<Restaurant> GetById(string id, 
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new NotImplementedException();
+        }
+
+        return _repository.FindByIdAsync(id, cancellationToken);
+    }
+
+    public Task<IEnumerable<Restaurant>> GetAll(
+        CancellationToken cancellationToken = default)
+    {
+        return _repository.FindAllAsync(cancellationToken);
+    }
+
     public Task<Restaurant> Create(Restaurant restaurant, 
         CancellationToken cancellationToken = default)
     {
@@ -25,5 +42,22 @@ public class RestaurantService: IRestaurantService
         }
         
         return _repository.ReplaceOneAsync(restaurant, cancellationToken);
+    }
+
+    public Task<Restaurant> Update(Restaurant restaurant, 
+        CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(string id, 
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new NotImplementedException();
+        }
+
+        return _repository.DeleteOneAsync(id, cancellationToken);
     }
 }

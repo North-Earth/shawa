@@ -1,12 +1,14 @@
+using Shawa.Domain.Restaurant;
+
 namespace Shawa.Domain.Order;
 
 public class OrderDetail
 {
-    protected string Id { get; }
+    public string Id { get; }
     
-    protected Visitor Visitor { get; }
+    public Visitor Visitor { get; }
     
-    protected IEnumerable<Food> Food { get; private set; }
+    public IEnumerable<Food> Food { get; private set; }
 
     public OrderDetail(string id, Visitor visitor, IEnumerable<Food> food)
     {

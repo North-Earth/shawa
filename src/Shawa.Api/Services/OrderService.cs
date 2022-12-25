@@ -1,62 +1,68 @@
+using Shawa.Application.Repositories;
 using Shawa.Application.Services;
 using Shawa.Domain.Order;
+using Shawa.Domain.Restaurant;
 
 namespace Shawa.Api.Services;
 
 public class OrderService: IOrderService
 {
-    
-    // TODO: order cache
+    private readonly ILogger<OrderService> _logger;
+    private readonly IOrderRepository _orderRepository;
+    private readonly IRestaurantRepository _restaurantRepository;
 
-    public OrderService()
+    public OrderService(ILogger<OrderService> logger, 
+        IOrderRepository orderRepository, 
+        IRestaurantRepository restaurantRepository)
     {
-        
+        _logger = logger;
+        _orderRepository = orderRepository;
+        _restaurantRepository = restaurantRepository;
     }
     
-    public Task<Order> GetOrder(string orderId)
+    public Task<Order> GetById(string id, 
+        CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            throw new NotImplementedException();
+        }
+
+        return _orderRepository.FindByIdAsync(id, cancellationToken);
+    }
+
+    public Task<Order> Create(string name, string restaurantId, 
+        string restaurantMenuId, string channelId, string creator,
+        CancellationToken cancellationToken = default)
+    {
+        var metadata = new OrderMetadata(channelId, 
+            restaurantId, restaurantMenuId);
+
         throw new NotImplementedException();
+        // var order = new Order(name, creator, metadata);
+
+        // return _orderRepository.ReplaceOneAsync(order, cancellationToken);
     }
 
-    Task IOrderService.CreateOrder(string name)
+    public async Task<Order> UpdateDetailAsync(string orderId, string detailId, 
+        Visitor visitor,
+        IDictionary<string, IEnumerable<string>> foodIngredients,
+        CancellationToken cancellationToken = default)
     {
-        return CreateOrder(name);
-    }
+        var order = await _orderRepository.FindByIdAsync(orderId, cancellationToken);
+        var menu = await _restaurantRepository.FindMenuByIdAsync(order.Metadata.RestaurantId,
+            order.Metadata.RestaurantMenuId, cancellationToken);
 
-    public Task<Order> CreateOrder(string name)
-    {
-        var order = new Order(string.Empty, name, 
-            DateTime.UtcNow, Array.Empty<OrderDetail>());
+        var food = foodIngredients.Select(foodIngredient 
+            => menu.Food.FirstOrDefault(x => x.Id == foodIngredient.Key)?
+                .AsOrderDetailsFood(foodIngredient.Value))
+            .Where(orderDetailsFood => orderDetailsFood is not null)
+            .ToList();
         
-        // TODO: send to repository
+        // order.UpdateDetails();
 
-        return Task.FromResult(order);
-    }
+        var detail = new OrderDetail(detailId, visitor, food);
 
-    public Task<Order> CompleteOrder(string orderId)
-    {
-        // TODO: get from repository or cache
-        
-        // TODO: send update to repository
-        
-        throw new NotImplementedException();
-    }
-
-    public Task AddOrderDetail()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveOrderDetail(string orderDetailId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Order> UpdateOrderDetail()
-    {
-        // TODO: get from repository or cache
-        
-        
-        throw new NotImplementedException();
+        return await _orderRepository.ReplaceOneDetailAsync(orderId, detail, cancellationToken);
     }
 }
